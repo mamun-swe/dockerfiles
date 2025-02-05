@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+    api:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: image-name                               # Update image name
+        container_name: container-name                  # Update container name
+        restart: always
+        depends_on:
+            - database
+        ports:
+            - "8000:8000"
+        volumes:
+            - .:/var/www
+        environment:
+            APP_NAME: "YOUR_APP_NAME"                   # Update app name
+            APP_ENV: local
+            APP_KEY: YOUR_APP_KEY                       # Update app key
+            DB_CONNECTION: mysql 
+            DB_HOST: database                           # Update database container name
+            DB_PORT: 3306
+            DB_DATABASE: MYSQL_DATABASE_NAME            # Update database name
+            DB_USERNAME: MYSQL_DATABASE_USER_NAME       # Update database username
+            DB_PASSWORD: MYSQL_DATABASE_PASSWORD        # Update database password
+        networks:
+            - your-network-name                         # Update network name
+
+    database:
+        image: mysql:latest
+        container_name: container.database              # Update container name
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD    # Update root password
+            MYSQL_DATABASE: MYSQL_DATABASE_NAME         # Update database name
+            MYSQL_USER: MYSQL_DATABASE_USER_NAME        # Update database username
+            MYSQL_PASSWORD: MYSQL_DATABASE_PASSWORD     # Update database password
+        volumes:
+            - db_data_volume_name:/var/lib/mysql        # Update volume name
+        networks:
+            - your-network-name                         # Update network name
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: container.phpmyadmin            # Update container name
+        restart: always
+        ports:
+            - "8080:80"
+        environment:
+            PMA_HOST: database                          # Update database container name
+            PMA_PORT: 3306
+            PMA_USER: MYSQL_DATABASE_USER_NAME          # Update database username
+            PMA_PASSWORD: MYSQL_DATABASE_PASSWORD       # Update database password
+        networks:
+            - your-network-name                         # Update network name
+
+networks:
+    your-network-name:                                  # Update network name
+        name: your-network-name                         # Update network name
+        driver: bridge
+
+volumes:
+    db_data_volume_name:                                # Update volume name
+        driver: local
