@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  portal.vidlist.ai:
+    build: ./
+    image: image.portal.vidlist.ai
+    container_name: container.portal.vidlist.ai
+    ports:
+      - 3000:3000
+
+    networks:
+      - vidlist-portal-network
+
+networks:
+  vidlist-portal-network:
+    name: vidlist-portal-network
+    driver: bridge

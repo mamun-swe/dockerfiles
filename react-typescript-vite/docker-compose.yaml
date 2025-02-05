@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  service-name:
+    build: ./
+    image: image-name
+    container_name: container-name
+    ports:
+      - 3000:3000
+
+    networks:
+      - network-name
+
+networks:
+  network-name:
+    name: network-name
+    driver: bridge
